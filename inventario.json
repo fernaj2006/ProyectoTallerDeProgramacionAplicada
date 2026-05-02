@@ -1,0 +1,32 @@
+[
+    {
+        "codigo": "001",
+        "producto": "Arroz",
+        "cantidad": 50,
+        "precio": 1200
+    },
+    {
+        "codigo": "002",
+        "producto": "Azúcar",
+        "cantidad": 30,
+        "precio": 1500
+    },
+    {
+        "codigo": "003",
+        "producto": "Aceite",
+        "cantidad": 20,
+        "precio": 3500
+    },
+    {
+        "codigo": "004",
+        "producto": "Leche",
+        "cantidad": 40,
+        "precio": 1800
+    },
+    {
+        "codigo": "005",
+        "producto": "Pan",
+        "cantidad": 25,
+        "precio": 2200
+    }
+]
