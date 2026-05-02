@@ -72,15 +72,15 @@ class InterfazLogin:
         acceso_concedido = self.logica.validar_acceso(credenciales)
         
         if acceso_concedido:
-            messagebox.showinfo("Bienvenido", f"¡Acceso concedido, {usuario_ingresado}!\n\nSirviendo el plato fuerte...")
+            messagebox.showinfo("Bienvenido", f"¡Acceso concedido, {usuario_ingresado}!")
             
             # Limpiamos las entradas de texto 
             self.builder.get_object('login_usuario').delete(0, tk.END)
             self.builder.get_object('login_pass').delete(0, tk.END)
             
-            # AQUÍ ES DONDE CONECTAS EL PLATO FUERTE
+            # AQUÍ ES DONDE SE CONECTAS
             # self.main_window.destroy() <-- Cerraría el login
-            # abrir_ventana_principal_de_tu_app() <-- Abriría tu programa real   
+            # abrir_ventana_principal_de_tu_app() <-- Abriría programa real   
         else:
             messagebox.showerror("Error", "Usuario o contraseña incorrectos.")
         
