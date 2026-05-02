@@ -1,0 +1,245 @@
+<?xml version='1.0' encoding='utf-8'?>
+<interface version="1.5" author="PygubuDesigner 0.41.4">
+  <project>
+    <settings>
+      <setting id="import_ttk">True</setting>
+    </settings>
+    <customwidgets />
+    <resources />
+  </project>
+  <object class="tk.Tk" id="ventana_principal" named="True">
+    <property name="background">#2c3e50</property>
+    <property name="geometry">400x480</property>
+    <property name="title" translatable="yes">Acceso al Sistema</property>
+    <child>
+      <object class="tk.Frame" id="frame_login" named="True">
+        <property name="background">#ecf0f1</property>
+        <property name="padx">20</property>
+        <property name="pady">20</property>
+        <layout manager="pack">
+          <property name="expand">true</property>
+          <property name="padx">30</property>
+          <property name="pady">30</property>
+          <property name="side">top</property>
+        </layout>
+        <child>
+          <object class="tk.Label" id="titulo_login">
+            <property name="background">#ecf0f1</property>
+            <property name="font">Helvetica 16 bold</property>
+            <property name="foreground">#2c3e50</property>
+            <property name="text" translatable="yes">INICIO DE SESIÓN</property>
+            <layout manager="pack">
+              <property name="pady">20</property>
+              <property name="side">top</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Frame" id="contenedor_campos">
+            <property name="background">#ecf0f1</property>
+            <layout manager="pack">
+              <property name="side">top</property>
+            </layout>
+            <child>
+              <object class="tk.Label" id="lbl_usuario">
+                <property name="background">#ecf0f1</property>
+                <property name="font">Helvetica 11</property>
+                <property name="text" translatable="yes">Usuario:</property>
+                <layout manager="grid">
+                  <property name="column">0</property>
+                  <property name="padx">5</property>
+                  <property name="pady">15</property>
+                  <property name="row">0</property>
+                  <property name="sticky">e</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="ttk.Entry" id="login_usuario" named="True">
+                <property name="font">Helvetica 11</property>
+                <property name="justify">center</property>
+                <layout manager="grid">
+                  <property name="column">1</property>
+                  <property name="padx">5</property>
+                  <property name="pady">15</property>
+                  <property name="row">0</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="tk.Label" id="lbl_pass">
+                <property name="background">#ecf0f1</property>
+                <property name="font">Helvetica 11</property>
+                <property name="text" translatable="yes">Contraseña:</property>
+                <layout manager="grid">
+                  <property name="column">0</property>
+                  <property name="padx">5</property>
+                  <property name="pady">15</property>
+                  <property name="row">1</property>
+                  <property name="sticky">e</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="ttk.Entry" id="login_pass" named="True">
+                <property name="font">Helvetica 11</property>
+                <property name="justify">center</property>
+                <property name="show">*</property>
+                <layout manager="grid">
+                  <property name="column">1</property>
+                  <property name="padx">5</property>
+                  <property name="pady">15</property>
+                  <property name="row">1</property>
+                </layout>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Button" id="btn_ingresar" named="True">
+            <property name="background">#3498db</property>
+            <property name="command">on_btn_entrar_clicked</property>
+            <property name="font">Helvetica 12 bold</property>
+            <property name="foreground">#ffffff</property>
+            <property name="text" translatable="yes">ENTRAR</property>
+            <property name="width">20</property>
+            <layout manager="pack">
+              <property name="pady">20</property>
+              <property name="side">top</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Button" id="btn_abrir_registro" named="True">
+            <property name="background">#95a5a6</property>
+            <property name="command">on_btn_abrir_registro_clicked</property>
+            <property name="font">Helvetica 10</property>
+            <property name="foreground">#ffffff</property>
+            <property name="text" translatable="yes">Crear cuenta nueva</property>
+            <layout manager="pack">
+              <property name="pady">5</property>
+              <property name="side">top</property>
+            </layout>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="tk.Toplevel" id="ventana_registro" named="True">
+    <property name="background">#2c3e50</property>
+    <property name="geometry">400x450</property>
+    <property name="title" translatable="yes">Registro de Usuario</property>
+    <child>
+      <object class="tk.Frame" id="frame_form_registro" named="True">
+        <property name="background">#ecf0f1</property>
+        <property name="padx">20</property>
+        <property name="pady">20</property>
+        <layout manager="pack">
+          <property name="expand">true</property>
+          <property name="padx">30</property>
+          <property name="pady">30</property>
+          <property name="side">top</property>
+        </layout>
+        <child>
+          <object class="tk.Label" id="titulo_registro">
+            <property name="background">#ecf0f1</property>
+            <property name="font">Helvetica 16 bold</property>
+            <property name="foreground">#2c3e50</property>
+            <property name="text" translatable="yes">NUEVO USUARIO</property>
+            <layout manager="pack">
+              <property name="pady">20</property>
+              <property name="side">top</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Frame" id="contenedor_campos_reg">
+            <property name="background">#ecf0f1</property>
+            <layout manager="pack">
+              <property name="side">top</property>
+            </layout>
+            <child>
+              <object class="tk.Label" id="lbl_reg_user">
+                <property name="background">#ecf0f1</property>
+                <property name="font">Helvetica 11</property>
+                <property name="text" translatable="yes">Usuario:</property>
+                <layout manager="grid">
+                  <property name="column">0</property>
+                  <property name="padx">5</property>
+                  <property name="pady">15</property>
+                  <property name="row">0</property>
+                  <property name="sticky">e</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="ttk.Entry" id="reg_usuario" named="True">
+                <property name="font">Helvetica 11</property>
+                <property name="justify">center</property>
+                <layout manager="grid">
+                  <property name="column">1</property>
+                  <property name="padx">5</property>
+                  <property name="pady">15</property>
+                  <property name="row">0</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="tk.Label" id="lbl_reg_pass">
+                <property name="background">#ecf0f1</property>
+                <property name="font">Helvetica 11</property>
+                <property name="text" translatable="yes">Contraseña:</property>
+                <layout manager="grid">
+                  <property name="column">0</property>
+                  <property name="padx">5</property>
+                  <property name="pady">15</property>
+                  <property name="row">1</property>
+                  <property name="sticky">e</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="ttk.Entry" id="reg_password" named="True">
+                <property name="font">Helvetica 11</property>
+                <property name="justify">center</property>
+                <property name="show">*</property>
+                <layout manager="grid">
+                  <property name="column">1</property>
+                  <property name="padx">5</property>
+                  <property name="pady">15</property>
+                  <property name="row">1</property>
+                </layout>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Button" id="btn_guardar_registro" named="True">
+            <property name="background">#2ecc71</property>
+            <property name="command">on_btn_guardar_registro_clicked</property>
+            <property name="font">Helvetica 12 bold</property>
+            <property name="foreground">#ffffff</property>
+            <property name="text" translatable="yes">GUARDAR</property>
+            <property name="width">20</property>
+            <layout manager="pack">
+              <property name="pady">25</property>
+              <property name="side">top</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Button" id="btn_volver" named="True">
+            <property name="background">#95a5a6</property>
+            <property name="font">Helvetica 10</property>
+            <property name="foreground">#ffffff</property>
+            <property name="text" translatable="yes">Volver atrás</property>
+            <layout manager="pack">
+              <property name="pady">5</property>
+              <property name="side">top</property>
+            </layout>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

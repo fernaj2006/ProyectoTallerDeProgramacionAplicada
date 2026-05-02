@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='utf-8'?>
+<interface version="1.5" author="PygubuDesigner 0.41.4">
+  <object class="tk.Tk" id="ventana_principal">
+    <property name="geometry">1200x700</property>
+    <property name="title">Sistema de Almacenamiento</property>
+    <child>
+      <object class="tk.Frame" id="frame_maestro">
+        <property name="background">#2c3e50</property>
+        <layout manager="grid">
+          <property name="column">0</property>
+          <property name="row">0</property>
+          <property name="sticky">nsew</property>
+        </layout>
+        <columnconfigure column="1" weight="1" />
+        <rowconfigure row="0" weight="1" />
+        
+        <child>
+          <object class="tk.Frame" id="sidebar">
+            <property name="background">#34495e</property>
+            <layout manager="grid">
+              <property name="column">0</property>
+              <property name="row">0</property>
+              <property name="rowspan">2</property>
+              <property name="sticky">nsew</property>
+              <property name="ipadx">15</property>
+            </layout>
+            
+            <child>
+              <object class="tk.LabelFrame" id="lf_crear">
+                <property name="text">Crear Registro</property>
+                <property name="background">#34495e</property>
+                <property name="foreground">#ffffff</property>
+                <layout manager="pack">
+                  <property name="fill">x</property>
+                  <property name="padx">15</property>
+                  <property name="pady">15</property>
+                </layout>
+                <child>
+                  <object class="tk.Button" id="btn_crear">
+                    <property name="text">Crear Nuevo</property>
+                    <property name="background">#2ecc71</property>
+                    <property name="foreground">#ffffff</property>
+                    <layout manager="pack">
+                      <property name="fill">x</property>
+                      <property name="padx">10</property>
+                      <property name="pady">10</property>
+                    </layout>
+                  </object>
+                </child>
+              </object>
+            </child>
+            
+            <child>
+              <object class="tk.LabelFrame" id="lf_actualizar">
+                <property name="text">Actualizar Registro</property>
+                <property name="background">#34495e</property>
+                <property name="foreground">#ffffff</property>
+                <layout manager="pack">
+                  <property name="fill">x</property>
+                  <property name="padx">15</property>
+                  <property name="pady">15</property>
+                </layout>
+                <child>
+                  <object class="tk.Button" id="btn_actualizar">
+                    <property name="text">Actualizar Datos</property>
+                    <property name="background">#f39c12</property>
+                    <property name="foreground">#ffffff</property>
+                    <layout manager="pack">
+                      <property name="fill">x</property>
+                      <property name="padx">10</property>
+                      <property name="pady">10</property>
+                    </layout>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+            <child>
+              <object class="tk.LabelFrame" id="lf_eliminar">
+                <property name="text">Eliminar Registro</property>
+                <property name="background">#34495e</property>
+                <property name="foreground">#ffffff</property>
+                <layout manager="pack">
+                  <property name="fill">x</property>
+                  <property name="padx">15</property>
+                  <property name="pady">15</property>
+                </layout>
+                <child>
+                  <object class="tk.Button" id="btn_eliminar">
+                    <property name="text">Eliminar Seleccionado</property>
+                    <property name="background">#e74c3c</property>
+                    <property name="foreground">#ffffff</property>
+                    <layout manager="pack">
+                      <property name="fill">x</property>
+                      <property name="padx">10</property>
+                      <property name="pady">10</property>
+                    </layout>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="ttk.Treeview" id="treeview_excel">
+            <property name="selectmode">extended</property>
+            <layout manager="grid">
+              <property name="column">1</property>
+              <property name="row">0</property>
+              <property name="sticky">nsew</property>
+              <property name="padx">20</property>
+              <property name="pady">20</property>
+            </layout>
+          </object>
+        </child>
+
+        <child>
+          <object class="tk.Frame" id="frame_inferior">
+            <property name="background">#2c3e50</property>
+            <layout manager="grid">
+              <property name="column">1</property>
+              <property name="row">1</property>
+              <property name="sticky">ew</property>
+              <property name="padx">20</property>
+              <property name="pady">20</property>
+            </layout>
+            
+            <child>
+              <object class="tk.Button" id="btn_reporte">
+                <property name="text">Generar Reporte</property>
+                <property name="background">#9b59b6</property>
+                <property name="foreground">#ffffff</property>
+                <layout manager="pack">
+                  <property name="side">right</property>
+                  <property name="padx">10</property>
+                </layout>
+              </object>
+            </child>
+            
+            <child>
+              <object class="tk.Button" id="btn_buscar">
+                <property name="text">Buscar Registro</property>
+                <property name="background">#3498db</property>
+                <property name="foreground">#ffffff</property>
+                <layout manager="pack">
+                  <property name="side">right</property>
+                  <property name="padx">10</property>
+                </layout>
+              </object>
+            </child>
+            
+          </object>
+        </child>
+
+      </object>
+    </child>
+  </object>
+</interface>
