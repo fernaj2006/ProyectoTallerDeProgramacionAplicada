@@ -1,3 +1,5 @@
+from producto_buid import BuilderProducto
+
 class LogicaInventario:
     """Controlador: Lógica de negocio del inventario (Principio DIP y SRP).
     
@@ -15,6 +17,7 @@ class LogicaInventario:
         """
         self.almacenamiento = almacenamiento
         self.lista_inventario = []
+        self.builder = BuilderProducto()  # Instancia del builder para crear productos
         self.cargar()
 
     def cargar(self):
@@ -101,44 +104,21 @@ class LogicaInventario:
         return True, precio
 
     def agregar_producto(self, nombre, cantidad, precio):
-        """Agrega un nuevo producto al inventario.
-        
-        Args:
-            nombre: Nombre del producto (ya validado)
-            cantidad: Cantidad disponible (número positivo)
-            precio: Precio unitario (número positivo)
-        
-        Returns:
-            True si se agregó correctamente
-        """
+       
         codigo = self.generar_codigo()
-        nuevo_item = {
-            'codigo': codigo,
-            'producto': nombre,
-            'cantidad': cantidad,
-            'precio': precio
-        }
+        
+        nuevo_item = (self.builder.set_codigo(codigo).set_producto(nombre).set_cantidad(cantidad).set_precio(precio).build())
+        
         self.lista_inventario.append(nuevo_item)
         self.almacenamiento.guardar_inventario(self.lista_inventario)
         return True
 
     def actualizar_producto(self, codigo, nombre, cantidad, precio):
-        """Actualiza los datos de un producto existente.
         
-        Args:
-            codigo: Código del producto a actualizar
-            nombre: Nuevo nombre
-            cantidad: Nueva cantidad
-            precio: Nuevo precio
-        
-        Returns:
-            True si se encontró y actualizó, False si no existe
-        """
-        for item in self.lista_inventario:
+        for i, item in enumerate(self.lista_inventario):
             if item['codigo'] == codigo:
-                item['producto'] = nombre
-                item['cantidad'] = cantidad
-                item['precio'] = precio
+                producto_actualizado = (self.builder.set_codigo(codigo).set_producto(nombre).set_cantidad(cantidad).set_precio(precio).build())
+                self.lista_inventario[i] = producto_actualizado
                 self.almacenamiento.guardar_inventario(self.lista_inventario)
                 return True
         return False

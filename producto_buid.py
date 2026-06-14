@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 class IbuilderProducto(ABC):
     
     @abstractmethod
-    def set_nombre(self, nombre: str) -> IbuilderProducto:
+    def set_producto(self, nombre: str) -> IbuilderProducto:
         pass
     
     @abstractmethod
@@ -28,9 +28,12 @@ class IbuilderProducto(ABC):
 class BuilderProducto(IbuilderProducto):
     
     def __init__(self):
+        self.reset()
+        
+    def reset(self):
         self.producto = {}
     
-    def set_nombre(self, nombre: str) -> BuilderProducto:
+    def set_producto(self, nombre: str) -> BuilderProducto:
         self.producto['producto'] = nombre
         return self
     
@@ -52,4 +55,7 @@ class BuilderProducto(IbuilderProducto):
             if campo not in self.producto:
                 raise ValueError(f"Falta el campo requerido: {campo}")
             
-        return self.producto
+
+        producto_final = self.producto
+        self.reset() 
+        return producto_final    
