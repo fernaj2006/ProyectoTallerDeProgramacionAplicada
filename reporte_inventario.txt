@@ -1,0 +1,7 @@
+Reporte de inventario
+====================
+001 - Arroz - Cantidad: 50 - Precio: 1200
+002 - Azúcar - Cantidad: 30 - Precio: 1500
+003 - Aceite - Cantidad: 20 - Precio: 3500
+004 - Leche - Cantidad: 40 - Precio: 1800
+005 - Pan - Cantidad: 25 - Precio: 2200
