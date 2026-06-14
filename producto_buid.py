@@ -24,7 +24,9 @@ class IbuilderProducto(ABC):
     @abstractmethod
     def build(self) -> dict:
         pass
-    
+
+# Contrutor concreto
+
 class BuilderProducto(IbuilderProducto):
     
     def __init__(self):
