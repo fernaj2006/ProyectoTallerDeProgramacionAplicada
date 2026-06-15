@@ -1,10 +1,9 @@
-import tkinter as tk
+﻿import tkinter as tk
 import re
 import pygubu
 from tkinter import messagebox, simpledialog
-from almacenamiento import JsonUsuario, JsonInventario
-from login_logica import LogicaUsuarios
-from inventario_logica import LogicaInventario
+from inventario_facade import InventarioFacade
+from usuarios_facade import UsuariosFacade
 
 class InterfazLogin:
     """Vista del login: muestra el formulario de acceso y registro."""
@@ -65,13 +64,8 @@ class InterfazLogin:
             return
 
         # Armamos el diccionario para mandarlo a la lógica
-        credenciales = {
-            'username': usuario_ingresado, 
-            'password': password_ingresada
-        }
-        
-        # Le preguntamos a login_logica.py si los datos son correctos
-        acceso_concedido = self.logica.validar_acceso(credenciales)
+        # Le preguntamos a la fachada si los datos son correctos
+        acceso_concedido = self.logica.validar_acceso(usuario_ingresado, password_ingresada)
 
         if acceso_concedido:
             messagebox.showinfo("Bienvenido", f"¡Acceso concedido, {usuario_ingresado}!")
@@ -84,9 +78,8 @@ class InterfazLogin:
             
             self.main_window.withdraw()
 
-            inventario_json = JsonInventario('inventario.json')
-            logica_inventario = LogicaInventario(inventario_json)
-            sistema_almacen = SistemaAlmacenamiento(logica_inventario, self)
+            inventario_facade = InventarioFacade('inventario.json')
+            sistema_almacen = SistemaAlmacenamiento(inventario_facade, self)
             sistema_almacen.iniciar()
             
             # Cuando se cierra la ventana de almacenamiento, volver a mostrar el login
@@ -110,12 +103,6 @@ class InterfazLogin:
         username = self.builder.get_object('reg_usuario').get()
         password = self.builder.get_object('reg_password').get()
 
-        # Creamos un diccionario
-        nuevo_usuario = {
-            'username': username, 
-            'password': password
-        }
-
         ###### Validaciones de registro ######
         patrones_permitidos = r'^[a-zA-Z0-9._\s-]+$'
         if not username or not password:
@@ -138,7 +125,7 @@ class InterfazLogin:
             return
         ###### Fin validaciones ######
         
-        registro_exitoso = self.logica.registrar_usuario(nuevo_usuario) # llamamos al metodo registrar_usuario de login_logica.py, devuelve un boolenao 
+        registro_exitoso = self.logica.registrar_usuario(username, password) # llamamos a la fachada de usuarios
         
         if registro_exitoso:
             messagebox.showinfo("Registro", "Usuario registrado con éxito")
@@ -154,10 +141,10 @@ class InterfazLogin:
         self.main_window.destroy() # termina la aplicación
 
 class SistemaAlmacenamiento:
-    """Vista del inventario: muestra los productos y delega acciones al controlador."""
+    """Vista del inventario: muestra los productos y delega acciones a la fachada."""
 
-    def __init__(self, logica_inventario, interfaz_login=None):
-        self.logica = logica_inventario
+    def __init__(self, inventario_facade, interfaz_login=None):
+        self.logica = inventario_facade
         self.interfaz_login = interfaz_login
         self.builder = pygubu.Builder()
         self.builder.add_from_file('sistema_almacenamiento.ui')
@@ -221,7 +208,7 @@ class SistemaAlmacenamiento:
     def actualizar_vista(self):
         for item in self.treeview.get_children():
             self.treeview.delete(item)
-        for item in self.logica.obtener_inventario():
+        for item in self.logica.obtener_productos():
             self.treeview.insert('', 'end', values=(
                 item.get('codigo', ''),
                 item.get('producto', ''),
@@ -236,7 +223,7 @@ class SistemaAlmacenamiento:
         dialog.resizable(False, False)
         dialog.grab_set()
 
-        codigo_auto = self.logica.generar_codigo()
+        codigo_auto = self.logica.obtener_siguiente_codigo()
 
         tk.Label(dialog, text='Código (Auto):').grid(row=0, column=0, sticky='e', padx=8, pady=8)
         tk.Label(dialog, text=codigo_auto, fg='blue', font=('Arial', 10, 'bold')).grid(row=0, column=1, padx=8, pady=8, sticky='w')
@@ -356,9 +343,9 @@ class SistemaAlmacenamiento:
 
         item_id = seleccionado[0]
         codigo = self.treeview.item(item_id, 'values')[0]
-        self.logica.eliminar_producto(codigo)
+        exito, mensaje = self.logica.eliminar_producto(codigo)
         self.actualizar_vista()
-        messagebox.showinfo('Inventario', 'Producto eliminado.', parent=self.main_window)
+        messagebox.showinfo('Inventario', mensaje, parent=self.main_window)
 
     def mostrar_buscar_producto(self):
         criterio = simpledialog.askstring('Buscar', 'Buscar por código o producto:', parent=self.main_window)
@@ -379,21 +366,19 @@ class SistemaAlmacenamiento:
             messagebox.showinfo('Buscar', 'No se encontraron productos con ese criterio.', parent=self.main_window)
 
     def mostrar_reporte(self):
-        ruta_reporte = 'reporte_inventario.txt'
-        contenido = self.logica.generar_reporte()
-        with open(ruta_reporte, 'w', encoding='utf-8') as archivo:
-            archivo.write(contenido)
-        messagebox.showinfo('Reporte', f'Reporte generado en {ruta_reporte}', parent=self.main_window)
+        exito, mensaje = self.logica.generar_reporte()
+        messagebox.showinfo('Reporte', mensaje, parent=self.main_window)
 
     def mostrar_resetear(self):
         if not messagebox.askyesno('Confirmar', '¿Resetear el inventario a los valores originales? Esto eliminará todos los cambios.', parent=self.main_window):
             return
-        self.logica.resetear_inventario()
+        exito, mensaje = self.logica.resetear_inventario()
         self.actualizar_vista()
-        messagebox.showinfo('Inventario', 'Inventario reseteado a valores originales.', parent=self.main_window)
+        messagebox.showinfo('Inventario', mensaje, parent=self.main_window)
 
 if __name__ == '__main__':
-    direccion_json = JsonUsuario('usuarios.json') # Le pasamos la ruta del archivo Json al constructor de JsonUsarios 
-    controlador_logica = LogicaUsuarios(direccion_json) # Pasamos el gestor al contructor de logica de usuarios
+    controlador_logica = UsuariosFacade('usuarios.json') # Fachada que oculta JSON y logica de usuarios
     app = InterfazLogin(controlador_logica) # Pasamos el controlador lógico al constructor de la interfaz gráfica
     app.iniciar() # llamamos al metodo iniciar para que comience a funcionar el bucle
+
+
