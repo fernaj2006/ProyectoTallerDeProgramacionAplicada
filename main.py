@@ -245,24 +245,13 @@ class SistemaAlmacenamiento:
             cantidad_text = entry_cantidad.get()
             precio_text = entry_precio.get()
 
-            es_valido, error_msg = self.logica.validar_nombre_producto(producto)
-            if not es_valido:
-                messagebox.showerror('Error de validación', error_msg, parent=dialog)
+            exito, mensaje = self.logica.crear_producto(producto, cantidad_text, precio_text)
+            if not exito:
+                messagebox.showerror('Error de validación', mensaje, parent=dialog)
                 return
 
-            es_valido, cantidad = self.logica.validar_cantidad(cantidad_text)
-            if not es_valido:
-                messagebox.showerror('Error de validación', cantidad, parent=dialog)
-                return
-
-            es_valido, precio = self.logica.validar_precio(precio_text)
-            if not es_valido:
-                messagebox.showerror('Error de validación', precio, parent=dialog)
-                return
-
-            self.logica.agregar_producto(producto.strip(), cantidad, precio)
             self.actualizar_vista()
-            messagebox.showinfo('Inventario', 'Producto agregado correctamente.', parent=self.main_window)
+            messagebox.showinfo('Inventario', mensaje, parent=self.main_window)
             dialog.destroy()
 
         tk.Button(dialog, text='Aceptar', command=on_aceptar, width=10).grid(row=4, column=0, padx=8, pady=12)
@@ -310,24 +299,13 @@ class SistemaAlmacenamiento:
             cantidad_text = entry_cantidad.get()
             precio_text = entry_precio.get()
 
-            es_valido, error_msg = self.logica.validar_nombre_producto(producto)
-            if not es_valido:
-                messagebox.showerror('Error de validación', error_msg, parent=dialog)
+            exito, mensaje = self.logica.actualizar_producto(codigo_actual, producto, cantidad_text, precio_text)
+            if not exito:
+                messagebox.showerror('Error de validación', mensaje, parent=dialog)
                 return
 
-            es_valido, cantidad = self.logica.validar_cantidad(cantidad_text)
-            if not es_valido:
-                messagebox.showerror('Error de validación', cantidad, parent=dialog)
-                return
-
-            es_valido, precio = self.logica.validar_precio(precio_text)
-            if not es_valido:
-                messagebox.showerror('Error de validación', precio, parent=dialog)
-                return
-
-            self.logica.actualizar_producto(codigo_actual, producto.strip(), cantidad, precio)
             self.actualizar_vista()
-            messagebox.showinfo('Inventario', 'Producto actualizado correctamente.', parent=self.main_window)
+            messagebox.showinfo('Inventario', mensaje, parent=self.main_window)
             dialog.destroy()
 
         tk.Button(dialog, text='Actualizar', command=on_actualizar, width=10).grid(row=4, column=0, padx=8, pady=12)
@@ -380,5 +358,7 @@ if __name__ == '__main__':
     controlador_logica = UsuariosFacade('usuarios.json') # Fachada que oculta JSON y logica de usuarios
     app = InterfazLogin(controlador_logica) # Pasamos el controlador lógico al constructor de la interfaz gráfica
     app.iniciar() # llamamos al metodo iniciar para que comience a funcionar el bucle
+
+
 
 
