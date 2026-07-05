@@ -1,6 +1,6 @@
 from almacenamiento import JsonInventario
 from inventario_logica import LogicaInventario
-
+from strategy_reportes import EstrategiaReporte, ReporteTXT
 
 class InventarioFacade:
     """Fachada del inventario.
@@ -51,12 +51,28 @@ class InventarioFacade:
         self.logica.resetear_inventario()
         return True, 'Inventario reseteado a valores originales.'
 
-    def generar_reporte(self, ruta_reporte='reporte_inventario.txt'):
-        contenido = self.logica.generar_reporte()
-        with open(ruta_reporte, 'w', encoding='utf-8') as archivo:
+    def generar_reporte(self, estrategia: EstrategiaReporte = None, ruta_reporte='reporte_inventario.txt'):
+        """Genera un reporte usando el patron Strategy.
+ 
+        Args:
+            estrategia: Objeto EstrategiaReporte (ReporteTXT o ReportePDF).
+                        Si no se indica, usa ReporteTXT por defecto.
+            ruta_reporte: Ruta del archivo de salida.
+        """
+        if estrategia is None:
+            estrategia = ReporteTXT()  # comportamiento por defecto, sin romper nada
+ 
+        contenido = estrategia.generar(self.logica.obtener_inventario())
+ 
+        # PDF (fpdf2) retorna bytearray, TXT retorna str
+        es_binario = isinstance(contenido, (bytes, bytearray))
+        modo       = 'wb' if es_binario else 'w'
+        encoding   = None if es_binario else 'utf-8'
+ 
+        with open(ruta_reporte, modo, encoding=encoding) as archivo:
             archivo.write(contenido)
         return True, f'Reporte generado en {ruta_reporte}'
-
+ 
     def _validar_datos_producto(self, nombre, cantidad_texto, precio_texto):
         es_valido, mensaje = self.logica.validar_nombre_producto(nombre)
         if not es_valido:

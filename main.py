@@ -4,6 +4,7 @@ import pygubu
 from tkinter import messagebox, simpledialog
 from inventario_facade import InventarioFacade
 from usuarios_facade import UsuariosFacade
+from strategy_reportes import ReporteTXT, ReportePDF
 
 class InterfazLogin:
     """Vista del login: muestra el formulario de acceso y registro."""
@@ -72,7 +73,7 @@ class InterfazLogin:
 
             try:
                 if self.ventana_reg.winfo_exists():
-                    self.ventana_reg.destroy()
+                    self.ventana_reg.withdraw()
             except Exception:
                 pass
             
@@ -184,6 +185,7 @@ class SistemaAlmacenamiento:
     def on_cerrar_ventana(self):
         """Maneja el cierre de la ventana de almacenamiento."""
         self.main_window.destroy()
+        self.main_window.quit()
 
     def cerrar_sesion(self):
         """Cierra la sesión y vuelve al login."""
@@ -344,8 +346,47 @@ class SistemaAlmacenamiento:
             messagebox.showinfo('Buscar', 'No se encontraron productos con ese criterio.', parent=self.main_window)
 
     def mostrar_reporte(self):
-        exito, mensaje = self.logica.generar_reporte()
-        messagebox.showinfo('Reporte', mensaje, parent=self.main_window)
+        # Pestaña de selección de formato de reporte
+        dialogo = tk.Toplevel(self.main_window)
+        dialogo.title('Generar Reporte')
+        dialogo.transient(self.main_window)
+        dialogo.resizable(False, False)
+        dialogo.grab_set()
+
+        # Etiqueta de instrucción
+        tk.Label(dialogo, text='Seleccione el formato del reporte:',
+                 font=('Arial', 11)).grid(row=0, column=0, columnspan=2, padx=16, pady=14)
+
+        ### Funciones para generar los reportes en los formatos seleccionados ###
+        
+        # Función para generar reporte en formato TXT
+        def generar_txt():
+            exito, mensaje = self.logica.generar_reporte(
+                estrategia=ReporteTXT(),
+                ruta_reporte='reporte_inventario.txt'
+            )
+            dialogo.destroy()
+            messagebox.showinfo('Reporte', mensaje, parent=self.main_window)
+
+        # Función para generar reporte en formato PDF
+        def generar_pdf():
+            exito, mensaje = self.logica.generar_reporte(
+                estrategia=ReportePDF(),
+                ruta_reporte='reporte_inventario.pdf'
+            )
+            dialogo.destroy()
+            messagebox.showinfo('Reporte', mensaje, parent=self.main_window)
+
+        # Botones para seleccionar el formato del reporte
+        tk.Button(dialogo, text='TXT', width=12,
+                  background='#2980b9', foreground='#ffffff',
+                  command=generar_txt).grid(row=1, column=0, padx=12, pady=12)
+
+        # Botón para generar reporte en formato PDF
+        tk.Button(dialogo, text='PDF', width=12,
+                  background='#27ae60', foreground='#ffffff',
+                  command=generar_pdf).grid(row=1, column=1, padx=12, pady=12)
+
 
     def mostrar_resetear(self):
         if not messagebox.askyesno('Confirmar', '¿Resetear el inventario a los valores originales? Esto eliminará todos los cambios.', parent=self.main_window):
